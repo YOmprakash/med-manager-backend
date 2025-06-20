@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./users.db');
+const dbMedications = new sqlite3.Database("./medications.db");
 
 db.serialize(() => {
   db.run(`
@@ -10,6 +11,19 @@ db.serialize(() => {
       password TEXT
     )
   `);
+});
+
+// Create tables
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS medication_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      medication_id INTEGER,
+      date TEXT,
+      taken INTEGER DEFAULT 0,
+      proof_image TEXT,
+      FOREIGN KEY(medication_id) REFERENCES medications(id)
+    )`);
 });
 
 

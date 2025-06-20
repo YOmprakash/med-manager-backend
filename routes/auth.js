@@ -1,12 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const db = require('../db/database');
+const dbMedications = require('../db/database');
 const router = express.Router();
 
 //Signup
 router.post('/signup', (req, res) => {
   const { name, email, password } = req.body;
- 
+
   if (!email || !password || !name) return res.status(400).json({ error: 'All fields are required' });
 
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -34,6 +35,17 @@ router.post('/login', (req, res) => {
 
     res.status(200).json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email } });
   });
+});
+
+// Mark medication as taken
+router.post("/medications/taken", (req, res) => {
+  const { medication_id, date, proof_image } = req.body;
+  dbMedications.run(`INSERT INTO medication_logs (medication_id, date, taken, proof_image) VALUES (?, ?, ?, ?)`,
+    [medication_id, date, 1, proof_image || null],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ success: true });
+    });
 });
 
 module.exports = router;
