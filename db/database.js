@@ -12,21 +12,5 @@ db.serialize(() => {
   `);
 });
 
-// Create tables
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS medication_logs (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      medication_id INTEGER,
-      date TEXT,
-      taken INTEGER DEFAULT 0,
-      proof_image TEXT,
-      FOREIGN KEY(medication_id) REFERENCES medications(id)
-    )`);
-});
-
-
-
-
 module.exports = db;
 
