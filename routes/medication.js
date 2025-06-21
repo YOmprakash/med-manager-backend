@@ -33,5 +33,19 @@ router.post("/medications/add", (req, res) => {
   });
 });
 
+// Get all medications
+router.get("/medications/list", (req, res) => {
+  const query = `SELECT * FROM medication`;
+
+  dbMedication.all(query, [], (err, rows) => {
+    if (err) {
+      console.error("🔴 Error fetching medications:", err.message);
+      return res.status(500).json({ error: "Failed to fetch medications" });
+    }
+
+    res.status(200).json(rows);
+  });
+});
+
 
 module.exports = router;
