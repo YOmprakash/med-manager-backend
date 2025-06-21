@@ -1,6 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./users.db');
-const dbMedications = new sqlite3.Database("./medications.db");
 
 db.serialize(() => {
   db.run(`
@@ -25,6 +24,8 @@ db.serialize(() => {
       FOREIGN KEY(medication_id) REFERENCES medications(id)
     )`);
 });
+
+
 
 
 module.exports = db;

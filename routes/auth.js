@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const db = require('../db/database');
-const dbMedications = require('../db/database');
 const router = express.Router();
 
 //Signup
@@ -37,15 +36,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-// Mark medication as taken
-router.post("/medications/taken", (req, res) => {
-  const { medication_id, date, proof_image } = req.body;
-  dbMedications.run(`INSERT INTO medication_logs (medication_id, date, taken, proof_image) VALUES (?, ?, ?, ?)`,
-    [medication_id, date, 1, proof_image || null],
-    function (err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ success: true });
-    });
-});
+
+
 
 module.exports = router;
